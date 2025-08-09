@@ -66,7 +66,7 @@ const azure = env.AZURE_RESOURCE_NAME && env.AZURE_API_KEY
 // Create AI provider
 const myProvider = azure ? customProvider({
   languageModels: {
-    'chat-model-reasoning-azure': azure('gpt-4.1-mini'),
+    'chat-model-reasoning-azure': azure('gpt-5-mini'),
   },
 }) : null
 

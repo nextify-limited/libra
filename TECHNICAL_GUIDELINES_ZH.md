@@ -1223,7 +1223,7 @@ export function ProjectList() {
 #### 人工智能提供商
 
 - **Anthropic Claude**：Claude 4.0 Sonnet，通过 @ai-sdk/anthropic 集成
-- **Azure OpenAI**：GPT-4.1、GPT-4.1 Mini，通过 @ai-sdk/azure 集成
+- **Azure OpenAI**：GPT-5、GPT-5 Mini，通过 @ai-sdk/azure 集成
 - **Google Gemini**：Gemini 2.5 Pro，通过 AI SDK 集成
 - **xAI Grok**：通过 @ai-sdk/xai 集成
 
@@ -2515,8 +2515,8 @@ export type AIModel = {
 
 export const AI_MODELS: AIModel[] = [
   {
-    id: 'gpt-4-1',
-    name: 'GPT 4.1',
+    id: 'gpt-5',
+    name: 'GPT 5',
     icon: '/openai.svg',
     provider: 'openai',
     requiredPlan: PLAN_TYPES.FREE,
@@ -2539,7 +2539,7 @@ export const AI_MODELS: AIModel[] = [
 
 // 文件编辑操作使用优化的小模型
 const DEFAULT_MODELS = {
-  FILE_EDIT: 'gpt-4-1-mini',
+  FILE_EDIT: 'gpt-5-mini',
   FALLBACK: 'chat-model-reasoning-azure',
   FILE_EDIT_FALLBACK: 'chat-model-reasoning-azure-mini',
 } as const

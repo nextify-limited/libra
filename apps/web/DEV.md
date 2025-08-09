@@ -348,9 +348,9 @@ export function useAdminPermissions() {
 export const myProvider = customProvider({
   languageModels: {
     // Azure OpenAI models
-    'chat-model-reasoning-azure': azure(env.AZURE_DEPLOYMENT_NAME || 'o4-mini'),
-    'chat-model-reasoning-azure-mini': azure('gpt-4.1-mini'),
-    'chat-model-reasoning-azure-nano': azure('gpt-4.1-nano'),
+    'chat-model-reasoning-azure': azure(DEFAULT_AZURE_DEPLOYMENT),
+    'chat-model-reasoning-azure-mini': azure('gpt-5-mini'),
+    'chat-model-reasoning-azure-nano': azure('gpt-5-nano'),
 
     // Databricks Claude models
     'chat-model-databricks-claude': databricksClaude('databricks-claude-3-7-sonnet'),

@@ -27,6 +27,8 @@ import type { AnthropicProviderOptions } from '@ai-sdk/anthropic'
 // ============================================================================
 
 const MODEL_MAPPING: Record<string, string> = {
+  'gpt-5': 'chat-model-reasoning-azure',
+  'gpt-5-mini': 'chat-model-reasoning-azure-mini',
   'gpt-4-1': 'chat-model-reasoning-azure',
   'gpt-4-1-mini': 'chat-model-reasoning-azure-mini',
   'claude-4-0-sonnet': 'chat-model-reasoning-anthropic',
@@ -35,7 +37,7 @@ const MODEL_MAPPING: Record<string, string> = {
 } as const
 
 const DEFAULT_MODELS = {
-  FILE_EDIT: 'gpt-4-1-mini',
+  FILE_EDIT: 'gpt-5-mini',
   FALLBACK: 'chat-model-reasoning-azure',
   FILE_EDIT_FALLBACK: 'chat-model-reasoning-azure-mini',
 } as const

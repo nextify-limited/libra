@@ -26,6 +26,7 @@ import { ArrowUpCircle, Loader2, Paperclip } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { authClient } from '@libra/auth/auth-client'
+import Image from 'next/image'
 import { useAutoResizeTextarea } from '../../../lib/hooks/use-auto-resize-textarea'
 import { getAllExamples } from './examples-panel'
 import { useHeroProjectCreate } from './hooks/use-hero-project-create'
@@ -299,6 +300,24 @@ export const AppDescriptionForm = () => {
 
               {/* Character counter and submit button */}
               <div className='flex items-center gap-3'>
+                {/* Default model badge */}
+                <div
+                  className={cn(
+                    'hidden sm:flex items-center gap-1 rounded-full border border-border/60',
+                    'bg-muted/60 px-2.5 py-1 text-xs text-muted-foreground',
+                    'backdrop-blur-sm select-none'
+                  )}
+                  title='Default model: GPT-5'
+                >
+                  <Image
+                    src='/openai.svg'
+                    alt='OpenAI'
+                    width={14}
+                    height={14}
+                    className='dark:invert opacity-80'
+                  />
+                  <span className='font-medium'>GPT-5</span>
+                </div>
                 {/* Character counter - show when approaching or over limit */}
                 {(isNearLimit || characterCount > 0) && (
                   <div className={cn(

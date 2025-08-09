@@ -37,11 +37,14 @@ export type AIModel = {
   provider: AIModelProvider
   requiredPlan: PlanType
 }
+// Global default Azure OpenAI deployment model for OpenAI provider
+export const DEFAULT_AZURE_DEPLOYMENT = 'gpt-5'
+
 
 export const AI_MODELS: AIModel[] = [
   {
-    id: 'gpt-4-1',
-    name: 'GPT 4.1',
+    id: 'gpt-5',
+    name: 'GPT 5',
     icon: '/openai.svg',
     provider: 'openai',
     requiredPlan: PLAN_TYPES.FREE,
@@ -65,8 +68,8 @@ export const AI_MODELS: AIModel[] = [
 export const getDefaultModel = (): AIModel => {
   return (
     AI_MODELS[0] ?? {
-      id: 'gpt-4-1',
-      name: 'GPT 4.1',
+      id: 'gpt-5',
+      name: 'GPT 5',
       icon: '/openai.svg',
       provider: 'openai',
       requiredPlan: PLAN_TYPES.FREE,

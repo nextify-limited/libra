@@ -68,7 +68,7 @@ function replaceConfigPlaceholders(templatePath: string, outputPath: string): vo
     CUSTOM_API_KEY: 'placeholder',
 
     // Azure AI configuration defaults
-    AZURE_DEPLOYMENT_NAME: 'gpt-4.1',
+    AZURE_DEPLOYMENT_NAME: 'gpt-5',
     AZURE_RESOURCE_NAME: 'libra-o4-mini',
     AZURE_API_KEY: 'placeholder-azure-key',
     AZURE_BASE_URL: 'https://gateway.ai.cloudflare.com/v1/',

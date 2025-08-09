@@ -761,7 +761,7 @@ type SubscriptionLimit = typeof subscriptionLimit.$inferSelect
 #### AI Providers
 
 - **Anthropic Claude**: Claude 4.0 Sonnet, integrated via @ai-sdk/anthropic
-- **Azure OpenAI**: GPT-4.1, GPT-4.1 Mini, integrated via @ai-sdk/azure
+- **Azure OpenAI**: GPT-5, GPT-5 Mini, integrated via @ai-sdk/azure
 - **Google Gemini**: Gemini 2.5 Pro, integrated via AI SDK
 - **xAI Grok**: Integrated via @ai-sdk/xai
 

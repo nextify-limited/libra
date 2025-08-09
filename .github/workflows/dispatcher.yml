@@ -276,7 +276,7 @@ jobs:
           export CUSTOM_API_KEY="${{ secrets.CUSTOM_API_KEY }}"
 
           # Azure AI configuration
-          export AZURE_DEPLOYMENT_NAME="${{ secrets.AZURE_DEPLOYMENT_NAME || 'gpt-4.1' }}"
+          export AZURE_DEPLOYMENT_NAME="${{ secrets.AZURE_DEPLOYMENT_NAME || 'gpt-5' }}"
           export AZURE_RESOURCE_NAME="${{ secrets.AZURE_RESOURCE_NAME || 'libra-o4-mini' }}"
           export AZURE_API_KEY="${{ secrets.AZURE_API_KEY }}"
           export AZURE_BASE_URL="${{ secrets.AZURE_BASE_URL || 'https://gateway.ai.cloudflare.com/v1/' }}"
