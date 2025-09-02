@@ -104,6 +104,7 @@ async function attemptPaidPlanUploadDeduction(
             .update(subscriptionLimit)
             .set({
                 uploadLimit: sql<number>`(${subscriptionLimit.uploadLimit}) - 1`,
+                updatedAt: sql`CURRENT_TIMESTAMP`,
             })
             .where(
                 and(
@@ -245,6 +246,7 @@ async function handleFreePlanUploadDeduction(
                         // projectNums: keep existing value, don't reset
                         periodStart: newPeriodStart.toISOString(),
                         periodEnd: nextPeriodEnd.toISOString(),
+                        updatedAt: sql`CURRENT_TIMESTAMP`,
                     })
                     .where(eq(subscriptionLimit.id, freeLimit.id))
 
@@ -475,6 +477,7 @@ export async function restoreUploadQuotaOnDeletion(c: AppContext): Promise<{
                         .update(subscriptionLimit)
                         .set({
                             uploadLimit: sql<number>`(${subscriptionLimit.uploadLimit}) + 1`,
+                            updatedAt: sql`CURRENT_TIMESTAMP`,
                         })
                         .where(
                             and(

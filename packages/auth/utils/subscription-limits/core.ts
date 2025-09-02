@@ -142,6 +142,7 @@ export async function createOrUpdateSubscriptionLimit(
           seats: limits.seats,
           periodStart: utcPeriodStart.toISOString(),
           periodEnd: utcPeriodEnd.toISOString(),
+          updatedAt: sql`CURRENT_TIMESTAMP`,
         })
         .where(eq(subscriptionLimit.id, existingActiveRecord.id))
 
@@ -182,7 +183,7 @@ export async function createOrUpdateSubscriptionLimit(
       // First deactivate existing paid plans
       await tx
         .update(subscriptionLimit)
-        .set({ isActive: false })
+        .set({ isActive: false, updatedAt: sql`CURRENT_TIMESTAMP` })
         .where(
           and(
             eq(subscriptionLimit.organizationId, organizationId),
@@ -293,6 +294,7 @@ async function attemptPaidPlanDeduction(
       .update(subscriptionLimit)
       .set({
         aiNums: sql<number>`(${subscriptionLimit.aiNums}) - 1`,
+        updatedAt: sql`CURRENT_TIMESTAMP`,
       })
       .where(
         and(
@@ -345,6 +347,7 @@ async function attemptPaidPlanEnhanceDeduction(
       .update(subscriptionLimit)
       .set({
         enhanceNums: sql<number>`(${subscriptionLimit.enhanceNums}) - 1`,
+        updatedAt: sql`CURRENT_TIMESTAMP`,
       })
       .where(
         and(
@@ -714,6 +717,7 @@ export async function getSubscriptionUsage(organizationId: string): Promise<Subs
           // projectNums: keep existing value, don't reset
           periodStart: newPeriodStart.toISOString(),
           periodEnd: nextPeriodEnd.toISOString(),
+          updatedAt: sql`CURRENT_TIMESTAMP`,
         })
         .where(eq(subscriptionLimit.id, freeLimit.id))
 
@@ -992,6 +996,7 @@ async function attemptPaidPlanProjectDeduction(
       .update(subscriptionLimit)
       .set({
         projectNums: sql<number>`(${subscriptionLimit.projectNums}) - 1`,
+        updatedAt: sql`CURRENT_TIMESTAMP`,
       })
       .where(
         and(
@@ -1601,6 +1606,7 @@ async function attemptPaidPlanDeployDeduction(
       .update(subscriptionLimit)
       .set({
         deployLimit: sql<number>`(${subscriptionLimit.deployLimit}) - 1`,
+        updatedAt: sql`CURRENT_TIMESTAMP`,
       })
       .where(
         and(
