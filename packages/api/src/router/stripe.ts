@@ -36,7 +36,7 @@ import { DEFAULT_FREE_LIMITS, getURL, mapToPlans } from '../utils/stripe-utils'
 
 // Initialize Stripe client
 const stripe = new Stripe(env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-07-30.basil',
+  apiVersion: '2025-08-27.basil',
   httpClient: Stripe.createFetchHttpClient(),
 })
 

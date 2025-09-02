@@ -24,7 +24,7 @@ import { env } from '../env.mjs'
 // Initialize Stripe client (will only be used if the plugin is added)
 export const stripeClient = env.STRIPE_SECRET_KEY
   ? new Stripe(env.STRIPE_SECRET_KEY, {
-      apiVersion: '2025-07-30.basil',
+      apiVersion: '2025-08-27.basil',
       httpClient: Stripe.createFetchHttpClient(),
       typescript: true,
     })
