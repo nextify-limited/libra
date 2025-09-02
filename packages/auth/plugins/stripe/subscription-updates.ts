@@ -26,6 +26,24 @@ export const onSubscriptionUpdate = async ({ event, subscription }: any) => {
   const db = await getAuthDb() // Get database instance
   // Called when a subscription is updated
 
+  // Get Stripe subscription data from the event
+  const stripeSubscription = event?.data?.object
+
+  console.log('onSubscriptionUpdate called', {
+    subscriptionId: subscription.id,
+    status: subscription.status,
+    stripeCancelAtPeriodEnd: stripeSubscription?.cancel_at_period_end,
+    hasPeriodStart: !!subscription.periodStart,
+    hasPeriodEnd: !!subscription.periodEnd
+  });
+
+  // If this is a cancellation event (cancel_at_period_end = true), don't update subscription limits
+  // The cancellation should be handled by onSubscriptionCancel, not onSubscriptionUpdate
+  if (stripeSubscription?.cancel_at_period_end) {
+    console.log('Skipping subscription limit update - this is a cancellation event');
+    return;
+  }
+
   // Only update limits if subscription is active and has period info
   if (
     subscription.status === 'active' &&

@@ -173,7 +173,7 @@ turbo test
 ## Code Style and Development Practices
 
 ### Code Formatting
-- **Tool**: Biome v2.0.6 (replaces ESLint + Prettier)
+- **Tool**: Biome v^2.2.2 (replaces ESLint + Prettier)
 - **Line Width**: 100 characters
 - **Indentation**: 2 spaces
 - **Quotes**: Single quotes for JS/JSX

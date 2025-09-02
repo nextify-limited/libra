@@ -1188,7 +1188,7 @@ export function ProjectList() {
 
 - **Vite**：快速开发服务器（builder、template 应用）
 - **Turborepo 2.5.5**：Monorepo 构建工具
-- **Biome 2.0.6**：代码格式化和 Lint 工具（替代 ESLint + Prettier）
+- **Biome ^2.2.2**：代码格式化和 Lint 工具（替代 ESLint + Prettier）
 
 ### 3.2 后端技术栈
 

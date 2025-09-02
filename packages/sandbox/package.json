@@ -1,6 +1,6 @@
 {
   "name": "@libra/sandbox",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "Sandbox utilities and types for Libra",
   "exports": {
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "e2b": "1.2.0-beta.5",
-    "@daytonaio/sdk": "^0.25.5",
+    "@daytonaio/sdk": "^0.25.6",
     "@libra/common": "*"
   },
   "devDependencies": {

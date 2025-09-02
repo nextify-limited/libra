@@ -959,7 +959,7 @@ Based on actual package.json analysis, @libra/ui core dependencies include:
     "lucide-react": "^0.486.0", // Icon library
     "tailwindcss": "^4.1.11", // Tailwind CSS v4
     "@tailwindcss/postcss": "^4.1.11", // Tailwind PostCSS plugin
-    "sonner": "^2.0.6", // Modern notification system
+    "sonner": "^^2.2.2", // Modern notification system
     "cmdk": "^0.2.1", // Command component
     "react-hook-form": "^7.60.0", // Form handling
     "input-otp": "^1.4.2", // OTP input component

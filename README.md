@@ -342,7 +342,7 @@ libra/
 
 | Tool | Purpose | Version |
 |------|---------|---------|
-| [Biome](https://biomejs.dev?utm_source=libra.dev) | Code formatting and quality checking | 2.0.6 |
+| [Biome](https://biomejs.dev?utm_source=libra.dev) | Code formatting and quality checking | ^2.2.2 |
 | [Vitest](https://vitest.dev?utm_source=libra.dev) | Unit testing framework | 3.2.4 |
 | [Paraglide.js](https://inlang.com/m/gerre34r/library-inlang-paraglideJs?utm_source=libra.dev) | Internationalization i18n solution | 2.2.0 |
 

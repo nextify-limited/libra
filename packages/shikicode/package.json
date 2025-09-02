@@ -1,6 +1,6 @@
 {
   "name": "@libra/shikicode",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "shikicode",
   "type": "module",
@@ -13,7 +13,7 @@
     "update": "bun update"
   },
   "devDependencies": {
-    "shiki": "^3.9.2",
+    "shiki": "^3.12.1",
     "@libra/typescript-config": "*"
   },
   "exports": {

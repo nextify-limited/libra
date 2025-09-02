@@ -726,7 +726,7 @@ type SubscriptionLimit = typeof subscriptionLimit.$inferSelect
 
 - **Vite**: Fast development server (builder, template applications)
 - **Turborepo 2.5.5**: Monorepo build tool
-- **Biome 2.0.6**: Code formatting and linting tool (replaces ESLint + Prettier)
+- **Biome ^2.2.2**: Code formatting and linting tool (replaces ESLint + Prettier)
 
 ### 3.2 Backend Technology Stack
 

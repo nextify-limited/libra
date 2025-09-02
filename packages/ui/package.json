@@ -1,6 +1,6 @@
 {
   "name": "@libra/ui",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "private": true,
   "scripts": {
@@ -22,10 +22,10 @@
     "lucide-react": "^0.486.0",
     "next-themes": "^0.4.6",
     "radix-ui": "^1.4.3",
-    "react-day-picker": "^9.8.1",
+    "react-day-picker": "^9.9.0",
     "react-hook-form": "^7.62.0",
     "sonner": "^2.0.7",
-    "tw-animate-css": "^1.3.6"
+    "tw-animate-css": "^1.3.7"
   },
   "devDependencies": {
     "@libra/typescript-config": "*",

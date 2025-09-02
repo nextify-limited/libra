@@ -1,6 +1,6 @@
 {
   "name": "@libra/screenshot",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Queue-based screenshot service for Libra platform",
   "scripts": {
     "dev": "wrangler dev --port 3009 --persist-to=../web/.wrangler/state",
@@ -21,11 +21,11 @@
     "@libra/sandbox": "*",
     "@libra/templates": "*",
     "@libra/typescript-config": "*",
-    "hono": "^4.9.2",
-    "@scalar/hono-api-reference": "^0.9.13",
+    "hono": "^4.9.5",
+    "@scalar/hono-api-reference": "^0.9.16",
     "@hono/zod-openapi": "^0.19.10",
-    "zod": "^4.0.17",
-    "drizzle-orm": "^0.44.4"
+    "zod": "^4.1.5",
+    "drizzle-orm": "^0.44.5"
   },
   "devDependencies": {
     "wrangler": "4.27.0",

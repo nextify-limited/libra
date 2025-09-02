@@ -1,6 +1,6 @@
 {
   "name": "@libra/cdn",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "scripts": {
     "dev": "wrangler dev --port 3004 --persist-to=../web/.wrangler/state",
     "deploy": "wrangler deploy --minify",
@@ -13,8 +13,8 @@
     "@libra/db": "*",
     "@libra/middleware": "*",
     "@libra/typescript-config": "*",
-    "hono": "^4.9.2",
-    "@scalar/hono-api-reference": "^0.9.13",
+    "hono": "^4.9.5",
+    "@scalar/hono-api-reference": "^0.9.16",
     "@hono/zod-openapi": "^0.19.10"
   },
   "devDependencies": {

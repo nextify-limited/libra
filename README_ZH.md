@@ -340,7 +340,7 @@ libra/
 
 | 工具                                                                     | 用途                 | 版本   |
 |-------------------------------------------------------------------------|---------------------|--------|
-| [Biome](https://biomejs.dev?utm_source=libra.dev)                                            | 代码格式化及质量检查 | 2.0.6  |
+| [Biome](https://biomejs.dev?utm_source=libra.dev)                                            | 代码格式化及质量检查 | ^2.2.2  |
 | [Vitest](https://vitest.dev?utm_source=libra.dev)                                            | 单元测试框架     | 3.2.4  |
 | [Paraglide.js](https://inlang.com/m/gerre34r/library-inlang-paraglideJs?utm_source=libra.dev) | 国际化 i18n 解决方案    | 2.2.0  |
 

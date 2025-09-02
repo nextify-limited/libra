@@ -1,6 +1,6 @@
 {
   "name": "@libra/auth",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "main": "auth-server.ts",
   "types": "./index.ts",
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "better-auth-harmony": "^1.2.5",
-    "stripe": "^18.4.0",
+    "stripe": "^18.5.0",
     "@libra/ui": "*",
     "@libra/db": "*",
     "@libra/common": "*",
@@ -28,6 +28,6 @@
   },
   "devDependencies": {
     "@libra/typescript-config": "*",
-    "@better-auth/cli": "^1.3.6"
+    "@better-auth/cli": "^1.3.7"
   }
 }
