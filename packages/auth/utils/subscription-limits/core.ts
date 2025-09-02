@@ -1122,7 +1122,7 @@ async function handleFreePlanProjectDeduction(
 
         // Refresh the FREE plan with new quota and immediately deduct 1 for this request
         // This ensures the refresh operation is immediately successful
-        // Note: For project quota, we increment existing projectNums by 1 (user is creating a new project)
+        // Note: projectNums represents remaining quota, so we refresh to default then deduct 1
         await tx
           .update(subscriptionLimit)
           .set({
@@ -1131,7 +1131,7 @@ async function handleFreePlanProjectDeduction(
             uploadLimit: freePlanLimits.aiNums,
             deployLimit: freePlanLimits.aiNums * 2,
             seats: freePlanLimits.seats,
-            projectNums: freeLimit.projectNums + 1, // Increment existing count by 1 (new project)
+            projectNums: freePlanLimits.projectNums - 1, // Refresh quota and deduct 1 for current project creation
             periodStart: newPeriodStart.toISOString(),
             periodEnd: nextPeriodEnd.toISOString(),
           })
@@ -1139,7 +1139,7 @@ async function handleFreePlanProjectDeduction(
 
         log.subscription('info', 'FREE plan refreshed and project deducted', {
           organizationId,
-          remaining: freePlanLimits.projectNums - 1,
+          newProjectNums: freePlanLimits.projectNums - 1,
           operation: 'project_usage_deduction'
         })
         return true // Refresh and deduction completed successfully
