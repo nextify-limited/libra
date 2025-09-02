@@ -1,5 +1,11 @@
 # @libra/docs
 
+## 1.0.7
+
+### Patch Changes
+
+- bug fix
+
 ## 1.0.6
 
 ### Patch Changes

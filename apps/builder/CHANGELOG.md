@@ -1,5 +1,11 @@
 # vite-shadcn-builder-libra
 
+## 1.0.10
+
+### Patch Changes
+
+- bug fix
+
 ## 1.0.9
 
 ### Patch Changes

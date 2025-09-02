@@ -1,5 +1,11 @@
 # @libra/shikicode
 
+## 1.0.2
+
+### Patch Changes
+
+- bug fix
+
 ## 1.0.1
 
 ### Patch Changes

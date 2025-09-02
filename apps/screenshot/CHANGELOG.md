@@ -1,5 +1,15 @@
 # @libra/screenshot
 
+## 1.0.7
+
+### Patch Changes
+
+- bug fix
+- Updated dependencies
+  - @libra/sandbox@1.0.2
+  - @libra/common@1.0.2
+  - @libra/auth@1.0.3
+
 ## 1.0.6
 
 ### Patch Changes

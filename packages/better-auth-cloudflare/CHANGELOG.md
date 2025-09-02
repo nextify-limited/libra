@@ -1,5 +1,11 @@
 # @libra/better-auth-cloudflare
 
+## 1.0.8
+
+### Patch Changes
+
+- bug fix
+
 ## 1.0.7
 
 ### Patch Changes

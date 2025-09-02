@@ -1,5 +1,20 @@
 # libra-core
 
+## 1.0.15
+
+### Patch Changes
+
+- bug fix
+- Updated dependencies
+  - @libra/better-auth-cloudflare@1.0.8
+  - @libra/better-auth-stripe@1.0.3
+  - @libra/shikicode@1.0.2
+  - @libra/sandbox@1.0.2
+  - @libra/common@1.0.2
+  - @libra/email@1.0.4
+  - @libra/auth@1.0.3
+  - @libra/ui@1.0.3
+
 ## 1.0.14
 
 ### Patch Changes
