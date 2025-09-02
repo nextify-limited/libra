@@ -129,17 +129,27 @@ export async function createOrUpdateSubscriptionLimit(
       .then((rows) => rows[0])
 
     if (existingActiveRecord) {
-      // Update existing active FREE plan
+      // Update existing active FREE plan - reset quotas to default values
+      // This ensures users get fresh quota when their FREE plan is refreshed
+      // Note: projectNums is NOT reset as it represents existing user projects
       await db
         .update(subscriptionLimit)
         .set({
-          updatedAt: sql`CURRENT_TIMESTAMP`,
+          aiNums: limits.aiNums,
+          enhanceNums: limits.aiNums,
+          uploadLimit: limits.aiNums,
+          deployLimit: limits.aiNums * 2,
+          seats: limits.seats,
+          periodStart: utcPeriodStart.toISOString(),
+          periodEnd: utcPeriodEnd.toISOString(),
         })
         .where(eq(subscriptionLimit.id, existingActiveRecord.id))
 
-      log.subscription('warn', 'Updated existing FREE plan', {
+      log.subscription('info', 'Updated FREE plan with quota reset', {
         organizationId,
         planName: PLAN_TYPES.FREE,
+        aiNums: limits.aiNums,
+        seats: limits.seats,
         operation: 'create_or_update_subscription_limit'
       });
     } else {
@@ -172,7 +182,7 @@ export async function createOrUpdateSubscriptionLimit(
       // First deactivate existing paid plans
       await tx
         .update(subscriptionLimit)
-        .set({ isActive: false, updatedAt: sql`CURRENT_TIMESTAMP` })
+        .set({ isActive: false })
         .where(
           and(
             eq(subscriptionLimit.organizationId, organizationId),
@@ -283,7 +293,6 @@ async function attemptPaidPlanDeduction(
       .update(subscriptionLimit)
       .set({
         aiNums: sql<number>`(${subscriptionLimit.aiNums}) - 1`,
-        updatedAt: sql`CURRENT_TIMESTAMP`,
       })
       .where(
         and(
@@ -336,7 +345,6 @@ async function attemptPaidPlanEnhanceDeduction(
       .update(subscriptionLimit)
       .set({
         enhanceNums: sql<number>`(${subscriptionLimit.enhanceNums}) - 1`,
-        updatedAt: sql`CURRENT_TIMESTAMP`,
       })
       .where(
         and(
@@ -519,6 +527,7 @@ async function handleFreePlanDeduction(
 
         // Refresh the FREE plan with new quota and immediately deduct 1 for this request
         // This ensures the refresh operation is immediately successful
+        // Note: projectNums is preserved to maintain user's actual project count
         await tx
           .update(subscriptionLimit)
           .set({
@@ -527,10 +536,9 @@ async function handleFreePlanDeduction(
             uploadLimit: freePlanLimits.aiNums,
             deployLimit: freePlanLimits.aiNums * 2,
             seats: freePlanLimits.seats,
-            projectNums: freePlanLimits.projectNums,
+            // projectNums: keep existing value, don't reset
             periodStart: newPeriodStart.toISOString(),
             periodEnd: nextPeriodEnd.toISOString(),
-            updatedAt: sql`CURRENT_TIMESTAMP`,
           })
           .where(eq(subscriptionLimit.id, freeLimit.id))
 
@@ -648,8 +656,87 @@ export async function getSubscriptionUsage(organizationId: string): Promise<Subs
 
   const authDb = await getAuthDb()
 
-  const freeLimit = getLatestActiveLimit(limits, 'free')
+  // Get current time for expiry check
+  const { rows } = await db.execute(sql`SELECT NOW() as "dbNow"`)
+  const [{ dbNow }] = rows as [{ dbNow: string | Date }]
+  const now = typeof dbNow === 'string' ? new Date(dbNow) : dbNow
+
+  let freeLimit = getLatestActiveLimit(limits, 'free')
   const paidLimit = getLatestActiveLimit(limits, 'paid')
+
+  // Check if FREE plan has expired and needs refresh
+  if (freeLimit) {
+    const periodEnd = new Date(freeLimit.periodEnd)
+    const nowTimestamp = now.getTime()
+    const periodEndTimestamp = periodEnd.getTime()
+    
+    if (nowTimestamp > periodEndTimestamp) {
+      log.subscription('info', 'FREE plan expired during usage query, refreshing', {
+        organizationId,
+        periodEnd: freeLimit.periodEnd,
+        operation: 'getSubscriptionUsage'
+      });
+
+      // Get FREE plan default limits
+      const { limits: freePlanLimits } = await getPlanLimits(PLAN_TYPES.FREE)
+
+      // Calculate new period
+      let newPeriodStart = new Date(freeLimit.periodStart)
+      while (addMonths(newPeriodStart, 1).getTime() <= nowTimestamp) {
+        newPeriodStart = addMonths(newPeriodStart, 1)
+      }
+
+      // Align to UTC midnight
+      newPeriodStart = new Date(
+        Date.UTC(
+          newPeriodStart.getUTCFullYear(),
+          newPeriodStart.getUTCMonth(),
+          newPeriodStart.getUTCDate(),
+          0,
+          0,
+          0,
+          0
+        )
+      )
+
+      const nextPeriodEnd = addMonths(newPeriodStart, 1)
+
+      // Refresh the FREE plan quota
+      // Note: updatedAt will be automatically updated by Drizzle's .$onUpdate() mechanism
+      await db
+        .update(subscriptionLimit)
+        .set({
+          aiNums: freePlanLimits.aiNums,
+          enhanceNums: freePlanLimits.aiNums,
+          uploadLimit: freePlanLimits.aiNums,
+          deployLimit: freePlanLimits.aiNums * 2,
+          seats: freePlanLimits.seats,
+          // projectNums: keep existing value, don't reset
+          periodStart: newPeriodStart.toISOString(),
+          periodEnd: nextPeriodEnd.toISOString(),
+        })
+        .where(eq(subscriptionLimit.id, freeLimit.id))
+
+      // Update the local freeLimit object with refreshed values
+      freeLimit = {
+        ...freeLimit,
+        aiNums: freePlanLimits.aiNums,
+        enhanceNums: freePlanLimits.aiNums,
+        uploadLimit: freePlanLimits.aiNums,
+        deployLimit: freePlanLimits.aiNums * 2,
+        seats: freePlanLimits.seats,
+        periodStart: newPeriodStart.toISOString(),
+        periodEnd: nextPeriodEnd.toISOString(),
+      }
+
+      log.subscription('info', 'FREE plan refreshed during usage query', {
+        organizationId,
+        newAiNums: freePlanLimits.aiNums,
+        newPeriodEnd: nextPeriodEnd.toISOString(),
+        operation: 'getSubscriptionUsage'
+      });
+    }
+  }
 
   const planNamesToQuery = new Set<string>()
   if (freeLimit) planNamesToQuery.add(PLAN_TYPES.FREE)
@@ -817,6 +904,7 @@ async function handleFreePlanEnhanceDeduction(
 
         // Refresh the FREE plan with new quota and immediately deduct 1 for this request
         // This ensures the refresh operation is immediately successful
+        // Note: projectNums is preserved to maintain user's actual project count
         await tx
           .update(subscriptionLimit)
           .set({
@@ -825,10 +913,9 @@ async function handleFreePlanEnhanceDeduction(
             uploadLimit: freePlanLimits.aiNums,
             deployLimit: freePlanLimits.aiNums * 2,
             seats: freePlanLimits.seats,
-            projectNums: freePlanLimits.projectNums,
+            // projectNums: keep existing value, don't reset
             periodStart: newPeriodStart.toISOString(),
             periodEnd: nextPeriodEnd.toISOString(),
-            updatedAt: sql`CURRENT_TIMESTAMP`,
           })
           .where(eq(subscriptionLimit.id, freeLimit.id))
 
@@ -905,7 +992,6 @@ async function attemptPaidPlanProjectDeduction(
       .update(subscriptionLimit)
       .set({
         projectNums: sql<number>`(${subscriptionLimit.projectNums}) - 1`,
-        updatedAt: sql`CURRENT_TIMESTAMP`,
       })
       .where(
         and(
@@ -1036,6 +1122,7 @@ async function handleFreePlanProjectDeduction(
 
         // Refresh the FREE plan with new quota and immediately deduct 1 for this request
         // This ensures the refresh operation is immediately successful
+        // Note: For project quota, we increment existing projectNums by 1 (user is creating a new project)
         await tx
           .update(subscriptionLimit)
           .set({
@@ -1044,10 +1131,9 @@ async function handleFreePlanProjectDeduction(
             uploadLimit: freePlanLimits.aiNums,
             deployLimit: freePlanLimits.aiNums * 2,
             seats: freePlanLimits.seats,
-            projectNums: freePlanLimits.projectNums - 1, // Refresh and deduction in one operation
+            projectNums: freeLimit.projectNums + 1, // Increment existing count by 1 (new project)
             periodStart: newPeriodStart.toISOString(),
             periodEnd: nextPeriodEnd.toISOString(),
-            updatedAt: sql`CURRENT_TIMESTAMP`,
           })
           .where(eq(subscriptionLimit.id, freeLimit.id))
 
@@ -1515,7 +1601,6 @@ async function attemptPaidPlanDeployDeduction(
       .update(subscriptionLimit)
       .set({
         deployLimit: sql<number>`(${subscriptionLimit.deployLimit}) - 1`,
-        updatedAt: sql`CURRENT_TIMESTAMP`,
       })
       .where(
         and(
