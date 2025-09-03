@@ -472,13 +472,21 @@ export const onSubscriptionComplete = async ({ event, subscription, stripeSubscr
   // Create new subscription limit record
   if (subscription.periodStart && subscription.periodEnd) {
     try {
+      // Determine billing interval from period duration
+      const periodStart = new Date(subscription.periodStart)
+      const periodEnd = new Date(subscription.periodEnd)
+      const periodDurationMs = periodEnd.getTime() - periodStart.getTime()
+      const monthsInPeriod = Math.round(periodDurationMs / (1000 * 60 * 60 * 24 * 30.44)) // Average days per month
+      const billingInterval = monthsInPeriod >= 11 ? 'year' : 'month' // 11+ months considered annual
+
       await createOrUpdateSubscriptionLimit(
         subscription.referenceId,
         subscription.stripeCustomerId || null,
         subscription.plan,
         subscription.periodStart,
         subscription.periodEnd,
-        customLimits
+        customLimits,
+        billingInterval
       )
       
       log.subscription('info', 'Subscription limits created/updated', {

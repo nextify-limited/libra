@@ -1,5 +1,14 @@
 # @libra/deploy
 
+## 1.0.8
+
+### Patch Changes
+
+- stripe bug fix
+- Updated dependencies
+  - @libra/auth@1.0.4
+  - @libra/db@1.0.1
+
 ## 1.0.7
 
 ### Patch Changes

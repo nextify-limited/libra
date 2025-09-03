@@ -1,6 +1,6 @@
 {
   "name": "@libra/db",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Database schemas and utilities for Libra",
   "main": "index.ts",

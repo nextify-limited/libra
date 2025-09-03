@@ -26,6 +26,7 @@ import { and, eq, sql } from 'drizzle-orm'
 import { getPlanLimits } from './constants'
 import { log, tryCatch, withDatabaseErrorHandling } from '@libra/common'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
+import { checkRefreshAndDeductQuota, checkAndRefreshAnnualQuota } from './annual-quota-refresh'
 
 import {
   PLAN_TYPES,
@@ -68,7 +69,8 @@ export async function createOrUpdateSubscriptionLimit(
   plan: string,
   periodStart: Date,
   periodEnd: Date,
-  customLimits?: { aiNums?: number; seats?: number; projectNums?: number }
+  customLimits?: { aiNums?: number; seats?: number; projectNums?: number },
+  billingInterval?: 'month' | 'year'
 ) {
   log.subscription('info', 'Creating/updating subscription limit', {
     organizationId,
@@ -169,6 +171,8 @@ export async function createOrUpdateSubscriptionLimit(
         isActive: true,
         periodStart: utcPeriodStart.toISOString(),
         periodEnd: utcPeriodEnd.toISOString(),
+        billingInterval: 'month', // FREE plans are always monthly
+        lastQuotaRefresh: utcPeriodStart.toISOString(),
       })
 
       log.subscription('info', 'Created new FREE plan', {
@@ -207,6 +211,8 @@ export async function createOrUpdateSubscriptionLimit(
         isActive: true,
         periodStart: utcPeriodStart.toISOString(),
         periodEnd: utcPeriodEnd.toISOString(),
+        billingInterval: billingInterval || 'month',
+        lastQuotaRefresh: utcPeriodStart.toISOString(),
       })
       // Note: No onConflict needed here because we deactivated existing plans first
       // Partial unique index will prevent duplicate active records
@@ -259,7 +265,27 @@ export async function checkAndUpdateAIMessageUsage(organizationId: string): Prom
     return true
   }
 
-  // FALLBACK PATH: Try paid plan deduction only if FREE plan exhausted
+  // ANNUAL SUBSCRIPTION CHECK: Check and refresh annual subscription quota if needed
+  // This must happen before attempting paid plan deduction
+  try {
+    const annualRefreshResult = await checkRefreshAndDeductQuota(organizationId, 'aiNums', 1)
+    if (annualRefreshResult.success) {
+      log.subscription('info', 'AI message deducted from annual subscription (with refresh check)', {
+        organizationId,
+        remaining: annualRefreshResult.remaining,
+        operation: 'ai_message_deduction'
+      });
+      return true
+    }
+  } catch (error) {
+    log.subscription('warn', 'Annual quota refresh check failed, falling back to regular paid plan', {
+      organizationId,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      operation: 'ai_message_deduction'
+    });
+  }
+
+  // FALLBACK PATH: Try paid plan deduction only if FREE plan exhausted and annual check failed
   // This ensures paid users can continue using AI after free quota is used
   const paidDeductionResult = await attemptPaidPlanDeduction(db, organizationId, now)
   if (paidDeductionResult.success) {
@@ -416,7 +442,27 @@ export async function checkAndUpdateEnhanceUsage(organizationId: string): Promis
     return true
   }
 
-  // FALLBACK PATH: Try paid plan deduction only if FREE plan exhausted
+  // ANNUAL SUBSCRIPTION CHECK: Check and refresh annual subscription quota if needed
+  // This must happen before attempting paid plan deduction
+  try {
+    const annualRefreshResult = await checkRefreshAndDeductQuota(organizationId, 'enhanceNums', 1)
+    if (annualRefreshResult.success) {
+      log.subscription('info', 'Enhance deducted from annual subscription (with refresh check)', {
+        organizationId,
+        remaining: annualRefreshResult.remaining,
+        operation: 'enhance_deduction'
+      });
+      return true
+    }
+  } catch (error) {
+    log.subscription('warn', 'Annual quota refresh check failed, falling back to regular paid plan', {
+      organizationId,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      operation: 'enhance_deduction'
+    });
+  }
+
+  // FALLBACK PATH: Try paid plan deduction only if FREE plan exhausted and annual check failed
   // This ensures paid users can continue using enhance features after free quota is used
   const paidDeductionResult = await attemptPaidPlanEnhanceDeduction(db, organizationId, now)
   if (paidDeductionResult.success) {
@@ -643,6 +689,18 @@ export async function getSubscriptionUsage(organizationId: string): Promise<Subs
     const db = await getDbAsync()
 
     try {
+      // PRIORITY: Check and refresh annual subscription quota if needed
+      // This ensures quota is up-to-date when users view their dashboard
+      try {
+        await checkAndRefreshAnnualQuota(organizationId)
+      } catch (error) {
+        log.subscription('warn', 'Annual quota refresh check failed during usage query', {
+          organizationId,
+          error: error instanceof Error ? error.message : 'Unknown error',
+          operation: 'getSubscriptionUsage'
+        })
+      }
+
       const limits = (await db
         .select()
         .from(subscriptionLimit)
@@ -1520,7 +1578,27 @@ export async function checkAndUpdateProjectUsage(organizationId: string): Promis
     return true
   }
 
-  // FALLBACK PATH: Try paid plan deduction only if FREE plan exhausted
+  // ANNUAL SUBSCRIPTION CHECK: Check and refresh annual subscription quota if needed
+  // This must happen before attempting paid plan deduction
+  try {
+    const annualRefreshResult = await checkRefreshAndDeductQuota(organizationId, 'projectNums', 1)
+    if (annualRefreshResult.success) {
+      log.subscription('info', 'Project deducted from annual subscription (with refresh check)', {
+        organizationId,
+        remaining: annualRefreshResult.remaining,
+        operation: 'project_usage_deduction'
+      })
+      return true
+    }
+  } catch (error) {
+    log.subscription('warn', 'Annual quota refresh check failed, falling back to regular paid plan', {
+      organizationId,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      operation: 'project_usage_deduction'
+    })
+  }
+
+  // FALLBACK PATH: Try paid plan deduction only if FREE plan exhausted and annual check failed
   // This ensures paid users can continue creating projects after free quota is used
   const paidDeductionResult = await attemptPaidPlanProjectDeduction(db, organizationId, now)
   if (paidDeductionResult.success) {

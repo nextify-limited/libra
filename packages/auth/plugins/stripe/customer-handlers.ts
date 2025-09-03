@@ -43,7 +43,9 @@ export const onCustomerCreate = async ({ customer, stripeCustomer, user }: any, 
         stripeCustomer.id,
         PLAN_TYPES.FREE,
         now,
-        periodEnd
+        periodEnd,
+        undefined, // no custom limits for FREE plan
+        'month' // FREE plans are always monthly
       )
       // @ts-ignore
       user.stripeCustomerId = stripeCustomer.id

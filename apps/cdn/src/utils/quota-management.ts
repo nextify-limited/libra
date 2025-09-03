@@ -25,6 +25,7 @@ import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import {getActiveOrganization} from '@libra/auth/utils/organization-utils'
 import {getPlanLimitsForHono} from '@libra/auth/utils/subscription-limits/constants'
 import {PLAN_TYPES, type PlanType} from '@libra/auth/utils/subscription-limits/types'
+import {checkRefreshAndDeductQuota} from '@libra/auth/utils/subscription-limits/annual-quota-refresh'
 import {log, tryCatch} from '@libra/common'
 import {subscriptionLimit} from '@libra/db/schema/project-schema'
 import type * as schema from '@libra/db/schema/project-schema'
@@ -344,6 +345,25 @@ export async function checkAndUpdateUploadUsage(c: AppContext): Promise<boolean>
                 operation: 'upload_quota_deduction'
             })
 
+            // PRIORITY: Try annual subscription quota refresh and deduction first
+            try {
+                const annualResult = await checkRefreshAndDeductQuota(organizationId, 'uploadLimit', 1)
+                if (annualResult.success) {
+                    log.cdn('info', 'Upload quota deducted from annual subscription', {
+                        organizationId,
+                        remaining: annualResult.remaining,
+                        operation: 'upload_quota_deduction'
+                    })
+                    return true
+                }
+            } catch (error) {
+                log.cdn('warn', 'Annual quota refresh check failed, falling back to regular logic', {
+                    organizationId,
+                    error: error instanceof Error ? error.message : 'Unknown error',
+                    operation: 'upload_quota_deduction'
+                })
+            }
+
             // Get current time from database to ensure UTC consistency across all operations
             const {rows} = await db.execute(sql`SELECT NOW() as "dbNow"`)
             const [{dbNow}] = rows as [{ dbNow: string | Date }]
@@ -356,7 +376,7 @@ export async function checkAndUpdateUploadUsage(c: AppContext): Promise<boolean>
                 operation: 'upload_quota_deduction'
             })
 
-            // PRIORITY PATH: Try FREE plan deduction first
+            // SECONDARY PATH: Try FREE plan deduction
             // Users should consume their free quota before paid quota
             const freeDeductionResult = await handleFreePlanUploadDeduction(db, organizationId, now, c)
             if (freeDeductionResult) {

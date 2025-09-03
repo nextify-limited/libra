@@ -1,6 +1,6 @@
 {
   "name": "@libra/cdn",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "scripts": {
     "dev": "wrangler dev --port 3004 --persist-to=../web/.wrangler/state",
     "deploy": "wrangler deploy --minify",

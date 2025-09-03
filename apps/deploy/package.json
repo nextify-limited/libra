@@ -1,6 +1,6 @@
 {
   "name": "@libra/deploy",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Queue-based deployment service for Libra platform",
   "scripts": {
     "dev": "wrangler dev --port 3008 --persist-to=../web/.wrangler/state",

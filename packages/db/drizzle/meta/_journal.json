@@ -8,6 +8,13 @@
       "when": 1752239997146,
       "tag": "0000_smooth_hardball",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1756822871709,
+      "tag": "0001_sticky_blade",
+      "breakpoints": true
     }
   ]
 }

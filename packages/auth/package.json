@@ -1,6 +1,6 @@
 {
   "name": "@libra/auth",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "main": "auth-server.ts",
   "types": "./index.ts",

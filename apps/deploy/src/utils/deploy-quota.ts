@@ -24,6 +24,7 @@ import { and, eq, sql } from 'drizzle-orm'
 import { tryCatch } from '@libra/common'
 import { createLogger } from './logger'
 import type { Bindings } from '../types'
+import { checkRefreshAndDeductQuota } from '@libra/auth/utils/subscription-limits/annual-quota-refresh'
 
 // Plan types for quota management
 const PLAN_TYPES = {
@@ -66,6 +67,25 @@ export async function checkAndUpdateDeployUsageForWorkflow(
       operation: 'deploy_quota_deduction'
     })
 
+    // PRIORITY: Try annual subscription quota refresh and deduction first
+    try {
+      const annualResult = await checkRefreshAndDeductQuota(organizationId, 'deployLimit', 1)
+      if (annualResult.success) {
+        logger.info('Deploy quota deducted from annual subscription', {
+          organizationId,
+          remaining: annualResult.remaining,
+          operation: 'deploy_quota_deduction'
+        })
+        return true
+      }
+    } catch (error) {
+      logger.warn('Annual quota refresh check failed, falling back to regular logic', {
+        organizationId,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        operation: 'deploy_quota_deduction'
+      })
+    }
+
     db = await getDbForHono({ env })
 
     // Get current time from database to ensure UTC consistency across all operations
@@ -73,7 +93,7 @@ export async function checkAndUpdateDeployUsageForWorkflow(
     const [{ dbNow }] = rows as [{ dbNow: string | Date }]
     const now = typeof dbNow === 'string' ? new Date(dbNow) : dbNow
 
-    // PRIORITY PATH: Try FREE plan deduction first
+    // SECONDARY PATH: Try FREE plan deduction
     // Users should consume their free quota before paid quota
     const freeDeductionResult = await handleFreePlanDeployDeduction(db, organizationId, now)
     if (freeDeductionResult) {

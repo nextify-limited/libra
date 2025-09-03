@@ -134,6 +134,13 @@ export const subscriptionLimit = pgTable('subscription_limit', {
     .defaultNow()
     .notNull()
     .$onUpdate(() => sql`now()`),
+  // Track last quota refresh time for annual subscriptions
+  lastQuotaRefresh: timestamp('last_quota_refresh', {
+    withTimezone: true,
+    mode: 'string'
+  }),
+  // Track billing interval: 'month' or 'year'
+  billingInterval: text('billing_interval').default('month'),
 }, (table) => ({
   // Partial unique constraint: only active plans must be unique per organization
   // Allows multiple inactive (historical) records for the same org+plan combination

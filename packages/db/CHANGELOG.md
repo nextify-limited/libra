@@ -1,5 +1,11 @@
 # @libra/db
 
+## 1.0.1
+
+### Patch Changes
+
+- stripe bug fix
+
 ## 1.0.0
 
 ### Major Changes
