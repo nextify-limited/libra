@@ -172,7 +172,7 @@ export async function createOrUpdateSubscriptionLimit(
         periodStart: utcPeriodStart.toISOString(),
         periodEnd: utcPeriodEnd.toISOString(),
         billingInterval: 'month', // FREE plans are always monthly
-        lastQuotaRefresh: utcPeriodStart.toISOString(),
+        lastQuotaRefresh: null, // FREE plans don't need quota refresh tracking
       })
 
       log.subscription('info', 'Created new FREE plan', {
@@ -212,7 +212,7 @@ export async function createOrUpdateSubscriptionLimit(
         periodStart: utcPeriodStart.toISOString(),
         periodEnd: utcPeriodEnd.toISOString(),
         billingInterval: billingInterval || 'month',
-        lastQuotaRefresh: utcPeriodStart.toISOString(),
+        lastQuotaRefresh: billingInterval === 'year' ? utcPeriodStart.toISOString() : null,
       })
       // Note: No onConflict needed here because we deactivated existing plans first
       // Partial unique index will prevent duplicate active records

@@ -20,7 +20,7 @@
     "@libra/sandbox": "*",
     "@libra/templates": "*",
     "@libra/typescript-config": "*",
-    "hono": "^4.9.5",
+    "hono": "^4.9.6",
     "@scalar/hono-api-reference": "^0.9.16",
     "@hono/zod-openapi": "^0.19.10",
     "zod": "^4.1.5",

@@ -9,9 +9,9 @@
     "update": "bun update"
   },
   "dependencies": {
-    "fumadocs-core": "^15.7.7",
-    "fumadocs-mdx": "^11.8.2",
-    "fumadocs-ui": "^15.7.7",
+    "fumadocs-core": "^15.7.8",
+    "fumadocs-mdx": "^11.8.3",
+    "fumadocs-ui": "^15.7.8",
     "motion": "^12.23.12",
     "octokit": "^5.0.3",
     "@orama/tokenizers": "^3.1.12",

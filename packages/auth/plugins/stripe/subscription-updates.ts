@@ -106,7 +106,7 @@ export const onSubscriptionUpdate = async ({ event, subscription }: any) => {
     const periodStart = new Date(subscription.periodStart)
     const periodEnd = new Date(subscription.periodEnd)
     const periodDurationMs = periodEnd.getTime() - periodStart.getTime()
-    const monthsInPeriod = Math.round(periodDurationMs / (1000 * 60 * 60 * 24 * 30.44)) // Average days per month
+    const monthsInPeriod = Math.floor(periodDurationMs / (1000 * 60 * 60 * 24 * 30.44)) // Average days per month
     const billingInterval = monthsInPeriod >= 11 ? 'year' : 'month' // 11+ months considered annual
 
     // Always update limits, whether renewal or not
