@@ -73,21 +73,17 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: 1.2.19
+          bun-version: 1.2.21
 
-      - name: Cache dependencies
+      - name: Cache Bun download cache
         uses: actions/cache@v4
-        id: bun-cache
         with:
-          path: |
-            **/node_modules
-            ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-cache-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
-            ${{ runner.os }}-bun-
+            ${{ runner.os }}-bun-cache-
 
       - name: Install dependencies
-        if: steps.bun-cache.outputs.cache-hit != 'true'
         run: bun install --frozen-lockfile
 
       - name: TypeScript type checking
@@ -137,18 +133,15 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: 1.2.19
+          bun-version: 1.2.21
 
-      - name: Cache dependencies
+      - name: Cache Bun download cache
         uses: actions/cache@v4
-        id: bun-cache
         with:
-          path: |
-            **/node_modules
-            ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-cache-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
-            ${{ runner.os }}-bun-
+            ${{ runner.os }}-bun-cache-
 
       - name: Cache Turbo build
         uses: actions/cache@v4
@@ -163,7 +156,6 @@ jobs:
             ${{ runner.os }}-turbo-dispatcher-
 
       - name: Install dependencies
-        if: steps.bun-cache.outputs.cache-hit != 'true'
         run: bun install --frozen-lockfile
 
       - name: Generate version

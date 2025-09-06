@@ -62,6 +62,17 @@
     "node": ">=24",
     "npm": ">=11"
   },
+  "overrides": {
+    "miniflare": {
+      "zod": "3.22.3"
+    },
+    "wrangler": {
+      "zod": "3.22.3"
+    },
+    "@cloudflare/vite-plugin": {
+      "zod": "3.22.3"
+    }
+  },
   "workspaces": [
     "apps/*",
     "packages/*",
