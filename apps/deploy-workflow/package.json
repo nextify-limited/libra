@@ -1,6 +1,6 @@
 {
   "name": "@libra/deploy-workflow",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "scripts": {
     "dev": "wrangler dev --port 3008 --persist-to=../web/.wrangler/state",
     "deploy": "wrangler deploy --minify",
@@ -21,6 +21,6 @@
     "@hono/zod-openapi": "^0.19.10"
   },
   "devDependencies": {
-    "wrangler": "4.27.0"
+    "wrangler": "^4.34.0"
   }
 }

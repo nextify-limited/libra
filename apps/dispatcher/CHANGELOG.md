@@ -1,5 +1,13 @@
 # @libra/dispatcher
 
+## 1.0.11
+
+### Patch Changes
+
+- update deps
+- Updated dependencies
+  - @libra/common@1.0.3
+
 ## 1.0.10
 
 ### Patch Changes

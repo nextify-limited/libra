@@ -1,7 +1,7 @@
 {
   "name": "vite-shadcn-template-libra",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -73,7 +73,7 @@
     "typescript": "^5.9.2",
     "vite": "^6.3.5",
     "@cloudflare/vite-plugin": "^1.11.0",
-    "wrangler": "^4.27.0",
+    "wrangler": "^4.34.0",
     "sandbox-tagger": "^0.0.2",
     "@cloudflare/workers-types": "^4.20250803.0"
   }

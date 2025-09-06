@@ -1,5 +1,16 @@
 # @libra/auth
 
+## 1.0.5
+
+### Patch Changes
+
+- update deps
+- Updated dependencies
+  - @libra/better-auth-cloudflare@1.0.9
+  - @libra/better-auth-stripe@1.0.4
+  - @libra/common@1.0.3
+  - @libra/ui@1.0.4
+
 ## 1.0.4
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@libra/dispatcher",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "type": "module",
   "scripts": {
     "dev": "wrangler dev --port 3007 --persist-to=../web/.wrangler/state",
@@ -22,8 +22,8 @@
     "@scalar/hono-api-reference": "^0.9.16"
   },
   "devDependencies": {
-    "wrangler": "4.27.0",
-    "@cloudflare/workers-types": "^4.20250903.0",
+    "wrangler": "^4.34.0",
+    "@cloudflare/workers-types": "^4.20250906.0",
     "typescript": "^5.9.2",
     "dotenv": "^17.2.2",
     "dotenv-cli": "^10.0.0",

@@ -1,6 +1,6 @@
 {
   "name": "@libra/deploy",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Queue-based deployment service for Libra platform",
   "scripts": {
     "dev": "wrangler dev --port 3008 --persist-to=../web/.wrangler/state",
@@ -27,8 +27,8 @@
     "drizzle-orm": "^0.44.5"
   },
   "devDependencies": {
-    "wrangler": "4.27.0",
-    "@types/node": "^24.3.0",
+    "wrangler": "^4.34.0",
+    "@types/node": "^24.3.1",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4",
     "@vitest/coverage-v8": "^3.2.4"

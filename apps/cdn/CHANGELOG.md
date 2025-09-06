@@ -1,5 +1,13 @@
 # @libra/cdn
 
+## 1.0.6
+
+### Patch Changes
+
+- update deps
+- Updated dependencies
+  - @libra/auth@1.0.5
+
 ## 1.0.5
 
 ### Patch Changes

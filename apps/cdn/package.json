@@ -1,6 +1,6 @@
 {
   "name": "@libra/cdn",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "scripts": {
     "dev": "wrangler dev --port 3004 --persist-to=../web/.wrangler/state",
     "deploy": "wrangler deploy --minify",
@@ -18,6 +18,6 @@
     "@hono/zod-openapi": "^0.19.10"
   },
   "devDependencies": {
-    "wrangler": "4.27.0"
+    "wrangler": "^4.34.0"
   }
 }
