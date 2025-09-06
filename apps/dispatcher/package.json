@@ -27,6 +27,7 @@
     "typescript": "^5.9.2",
     "dotenv": "^17.2.2",
     "dotenv-cli": "^10.0.0",
-    "@libra/typescript-config": "*"
+    "@libra/typescript-config": "*",
+    "zod-v3": "npm:zod@3.22.3"
   }
 }
