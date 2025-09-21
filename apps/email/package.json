@@ -1,6 +1,6 @@
 {
   "name": "email",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "build": "email build",
@@ -9,10 +9,10 @@
   },
   "dependencies": {
     "@libra/email": "*",
-    "react-email": "^4.2.8"
+    "react-email": "^4.2.11"
   },
   "devDependencies": {
     "@libra/typescript-config": "*",
-    "@react-email/preview-server": "^4.2.8"
+    "@react-email/preview-server": "^4.2.11"
   }
 }

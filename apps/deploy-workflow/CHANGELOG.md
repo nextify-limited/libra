@@ -1,5 +1,14 @@
 # @libra/deploy-workflow
 
+## 1.0.5
+
+### Patch Changes
+
+- update deps
+- Updated dependencies
+  - @libra/common@1.0.3
+  - @libra/auth@1.0.5
+
 ## 1.0.4
 
 ### Patch Changes
