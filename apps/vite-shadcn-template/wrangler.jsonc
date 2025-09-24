@@ -2,7 +2,7 @@
   "$schema": "../../node_modules/wrangler/config-schema.json",
   "name": "vite-shadcn-template",
   "main": "src/worker.ts",
-  "compatibility_date": "2025-08-03",
+  "compatibility_date": "2025-09-03",
   "compatibility_flags": [
     "nodejs_compat",
     "global_fetch_strictly_public"
@@ -13,7 +13,7 @@
     "binding": "ASSETS"
   },
   "minify": true,
-  "placement": { "mode": "smart" },
+  "placement": { "mode": "smart" }
   // "observability": {
   //   "enabled": true
   // }

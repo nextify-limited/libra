@@ -1,6 +1,6 @@
 {
   "name": "@libra/docs",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "private": true,
   "scripts": {
     "build": "next build",
@@ -12,7 +12,7 @@
     "fumadocs-core": "^15.7.13",
     "fumadocs-mdx": "^11.10.1",
     "fumadocs-ui": "^15.7.13",
-    "motion": "^12.23.16",
+    "motion": "^12.23.19",
     "octokit": "^5.0.3",
     "@orama/tokenizers": "^3.1.14",
     "@orama/orama": "^3.1.14",

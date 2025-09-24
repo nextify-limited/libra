@@ -1,7 +1,7 @@
 {
   "name": "vite-shadcn-builder-libra",
   "private": true,
-  "version": "1.0.11",
+  "version": "1.0.12",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -47,13 +47,13 @@
     "zod": "^4.1.11",
     "@hookform/resolvers": "^5.2.2",
     "hono": "^4.9.8",
-    "@tanstack/react-query": "^5.89.0",
+    "@tanstack/react-query": "^5.90.2",
     "recharts": "^2.15.4",
     "vaul": "^1.1.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "embla-carousel-react": "^8.6.0",
-    "motion": "^12.23.16"
+    "motion": "^12.23.19"
   },
   "devDependencies": {
     "@types/node": "^22.18.6",
@@ -69,8 +69,8 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.9.2",
     "vite": "^6.3.6",
-    "@cloudflare/vite-plugin": "^1.13.3",
+    "@cloudflare/vite-plugin": "^1.13.4",
     "wrangler": "4.27.0",
-    "@cloudflare/workers-types": "^4.20250921.0"
+    "@cloudflare/workers-types": "^4.20250924.0"
   }
 }

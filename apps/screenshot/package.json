@@ -1,6 +1,6 @@
 {
   "name": "@libra/screenshot",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Queue-based screenshot service for Libra platform",
   "scripts": {
     "dev": "wrangler dev --port 3009 --persist-to=../web/.wrangler/state",

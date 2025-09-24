@@ -1,5 +1,13 @@
 # @libra/screenshot
 
+## 1.0.9
+
+### Patch Changes
+
+- docs bug fix & deps update
+- Updated dependencies
+  - @libra/auth@1.0.6
+
 ## 1.0.8
 
 ### Patch Changes

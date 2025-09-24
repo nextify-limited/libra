@@ -1,5 +1,14 @@
 # @libra/auth
 
+## 1.0.6
+
+### Patch Changes
+
+- docs bug fix & deps update
+- Updated dependencies
+  - @libra/better-auth-cloudflare@1.0.10
+  - @libra/better-auth-stripe@1.0.5
+
 ## 1.0.5
 
 ### Patch Changes

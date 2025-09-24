@@ -1,5 +1,11 @@
 # @libra/better-auth-stripe
 
+## 1.0.5
+
+### Patch Changes
+
+- docs bug fix & deps update
+
 ## 1.0.4
 
 ### Patch Changes

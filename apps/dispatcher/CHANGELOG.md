@@ -1,5 +1,11 @@
 # @libra/dispatcher
 
+## 1.0.12
+
+### Patch Changes
+
+- docs bug fix & deps update
+
 ## 1.0.11
 
 ### Patch Changes
